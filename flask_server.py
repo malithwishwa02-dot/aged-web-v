@@ -19,6 +19,7 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 def dashboard():
     return render_template('dashboard.html')
 
+<<<<<<< HEAD
 @app.route('/api/spawn', methods=['POST'])
 def spawn_agent():
     data = request.get_json()
@@ -69,18 +70,29 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 def dashboard():
     return render_template('dashboard.html')
 
+=======
+>>>>>>> c8dd0d8 (CHRONOS V2026: Core Initialization - Level 9 Modules Active)
 @app.route('/api/spawn_agent', methods=['POST'])
 def spawn_agent():
     data = request.get_json()
     target = data.get('target')
     persona = data.get('persona')
+<<<<<<< HEAD
+=======
+    identity = data.get('identity')
+    mode = data.get('mode', None)
+>>>>>>> c8dd0d8 (CHRONOS V2026: Core Initialization - Level 9 Modules Active)
     job_id = str(uuid.uuid4())
     LOGS[job_id] = []
     def log_callback(msg):
         LOGS[job_id].append({'timestamp': time.time(), 'msg': msg})
     def run_job():
         JOBS[job_id] = 'RUNNING'
+<<<<<<< HEAD
         orchestrator = AI_Orchestrator(job_id, target, log_callback)
+=======
+        orchestrator = AI_Orchestrator(job_id, target, log_callback, identity=identity, mode=mode)
+>>>>>>> c8dd0d8 (CHRONOS V2026: Core Initialization - Level 9 Modules Active)
         result = orchestrator.run_aging_cycle()
         JOBS[job_id] = 'COMPLETED' if result == 'SUCCESS' else 'FAILED'
     thread = threading.Thread(target=run_job, daemon=True)

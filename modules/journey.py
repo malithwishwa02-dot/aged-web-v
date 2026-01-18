@@ -1,7 +1,9 @@
+
 import time
 import sys
-import time
-import sys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+import random
 
 class Journey:
     def execute_manual_handover(self):
@@ -520,3 +522,47 @@ def perform_history_generation(driver: webdriver.Chrome,
     except Exception as e:
         logger.error(f"[History Generation] Failed: {e}")
         return False
+<<<<<<< HEAD
+=======
+
+    def start_journey(self, action_type=None, identity=None):
+        if action_type == "ABANDON_CART" and identity:
+            self.visit_product_page()
+            self.add_to_cart()
+            self.go_to_checkout()
+            self.fill_shipping_info(identity)
+            time.sleep(random.uniform(30, 120)) # "Thinking" time
+            self.driver.close() # HARD ABANDON to trigger pixel
+        else:
+            # ...existing journey logic...
+            pass
+
+    def fill_shipping_info(self, identity):
+        try:
+            # Shopify selectors
+            if "Shopify.Checkout" in self.driver.page_source:
+                self.driver.find_element(By.CSS_SELECTOR, "input#checkout_email").send_keys(identity.get('email', ''))
+                self.driver.find_element(By.CSS_SELECTOR, "input#checkout_shipping_address_first_name").send_keys(identity.get('first_name', ''))
+                self.driver.find_element(By.CSS_SELECTOR, "input#checkout_shipping_address_last_name").send_keys(identity.get('last_name', ''))
+                self.driver.find_element(By.CSS_SELECTOR, "input#checkout_shipping_address_address1").send_keys(identity.get('address', ''))
+                self.driver.find_element(By.CSS_SELECTOR, "input#checkout_shipping_address_city").send_keys(identity.get('city', ''))
+                self.driver.find_element(By.CSS_SELECTOR, "input#checkout_shipping_address_zip").send_keys(identity.get('zip', ''))
+                # Blur event for email
+                self.driver.find_element(By.CSS_SELECTOR, "input#checkout_email").send_keys(Keys.TAB)
+            # WooCommerce selectors
+            elif "woocommerce-checkout" in self.driver.find_element(By.TAG_NAME, "body").get_attribute("class"):
+                self.driver.find_element(By.CSS_SELECTOR, "input#billing_first_name").send_keys(identity.get('first_name', ''))
+                self.driver.find_element(By.CSS_SELECTOR, "input#billing_last_name").send_keys(identity.get('last_name', ''))
+                self.driver.find_element(By.CSS_SELECTOR, "input#billing_address_1").send_keys(identity.get('address', ''))
+                self.driver.find_element(By.CSS_SELECTOR, "input#billing_postcode").send_keys(identity.get('zip', ''))
+                self.driver.find_element(By.CSS_SELECTOR, "input#billing_email").send_keys(identity.get('email', ''))
+                self.driver.find_element(By.CSS_SELECTOR, "input#billing_email").send_keys(Keys.TAB)
+            # Magento selectors
+            elif "Mage" in self.driver.execute_script("return Object.keys(window)"):
+                self.driver.find_element(By.CSS_SELECTOR, "input#customer-email").send_keys(identity.get('email', ''))
+                self.driver.find_element(By.CSS_SELECTOR, "input[name='firstname']").send_keys(identity.get('first_name', ''))
+                self.driver.find_element(By.CSS_SELECTOR, "input[name='lastname']").send_keys(identity.get('last_name', ''))
+                self.driver.find_element(By.CSS_SELECTOR, "input[name='street[0]']").send_keys(identity.get('address', ''))
+        except Exception as e:
+            self.logger.warning(f"Form fill failed: {e}")
+>>>>>>> c8dd0d8 (CHRONOS V2026: Core Initialization - Level 9 Modules Active)

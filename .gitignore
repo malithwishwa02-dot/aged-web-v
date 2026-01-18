@@ -22,6 +22,20 @@ downloads/
 eggs/
 .eggs/
 lib/
+
+# Chronos OPSEC exclusions
+isolation_state.json
+*.pem
+*.env
+*.zip
+logs/
+__pycache__/
+*.pyc
+.env*
+# Exclude OS/IDE junk
+Thumbs.db
+.vscode/
+.idea/
 lib64/
 parts/
 sdist/
