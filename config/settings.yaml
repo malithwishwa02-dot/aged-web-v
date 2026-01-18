@@ -1,0 +1,57 @@
+# PROMETHEUS-CORE Configuration
+# Method 4: Time-Shifted Cookie Injection Settings
+
+# --- CONFIGURATION START ---
+BROWSER_TYPE: "multilogin"
+MLA_PROFILE_ID: "37ab1612-c285-4314-b32a-6a06d35d6d84"
+TARGET_URL: "https://donate.wikimedia.org"
+AGE_DAYS: 90
+EXECUTION_MODE: "GENERATE_ONLY"
+# --- CONFIGURATION END ---
+
+target_url: "https://donate.wikimedia.org"
+age_days: 90
+
+# EXECUTION MODE CONFIGURATION
+execution:
+  mode: "GENERATE_ONLY"        # GENERATE_ONLY = Stop after cookie generation (no checkout)
+  
+temporal:
+  target_age_days: 90           # Default aging period
+  entropy_segments: 12          # Number of time advancement segments
+  poisson_lambda: 2.5          # Poisson distribution parameter
+  min_interval_hours: 2        # Minimum time between advances
+  max_interval_hours: 168      # Maximum time between advances (1 week)
+
+# MULTILOGIN (MLA) CONFIGURATION
+multilogin:
+  browser_type: "multilogin"   # Browser type: multilogin, chrome, firefox
+  mla_port: 45000              # Default MLA Local API port
+  mla_profile_id: "37ab1612-c285-4314-b32a-6a06d35d6d84"           # MLA Profile ID (leave blank for auto-generation)
+  headless_mode: false         # MLA must be visible (cannot run headless)
+  
+project:
+  name: "CHRONOS-MLA-V3"
+  version: "3.0.0"
+  opsec_level: "MAXIMUM"
+
+execution:
+  mode: "GENERATE_ONLY"       # Strict safety: Stops before checkout
+  manual_handover: true       # Enforces 180s silence before exit
+  debug_logging: true
+
+temporal:
+  target_age_days: 90         # T-90 Days Genesis
+  resync_on_exit: true        # Restoration watchdog
+  force_utc: true             # Windows API requires UTC
+
+multilogin:
+  api_url: "http://127.0.0.1" # Localhost
+  api_port: 35000             # Default MLX port
+  api_version: "v2"
+  profile_id: ""              # Injected at runtime
+
+behavior:
+  poisson_lambda: 2.5         # Burstiness factor
+  mouse_speed: "human_slow"
+  scroll_volatility: 0.3      # 30% chance to scroll UP (reading)

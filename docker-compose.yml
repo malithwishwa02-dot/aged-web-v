@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  cookies-factory:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=production
+    command: sh -c "Xvfb :99 -screen 0 1280x1024x24 & export DISPLAY=:99 && python flask_server.py"
+    shm_size: 2gb
